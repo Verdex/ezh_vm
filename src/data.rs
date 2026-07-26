@@ -22,81 +22,66 @@ pub enum Reg {
     Base,
 }
 
-
 #[derive(Debug)]
 pub enum NumType {
-    U8,
-    I8,
-    U16,
-    I16,
-    U32,
-    I32,
+    Byte,
     U64, 
     I64,
-    F32,
     F64,
 }
 
 #[derive(Debug)]
 pub enum Align {
     A8,
-    A16,
-    A32,
     A64,
 }
 
 #[derive(Debug)]
-pub enum Op<ID> { // TODO: ID might not make sense anymore?
+pub enum Arg {
+    Const(i64),
+    Reg(Reg),
+    RegDeref(Reg, isize),
+}
+
+#[derive(Debug)]
+pub enum Op<Id> { 
     // TODO need a way to do "sys" calls
-    // TODO label?
-    //
-    // TODO lea
 
-    Jump(ID),
-    BranchTrue(ID, ID), // TODO Branch not zero and branch zero ?
+    Lea(Arg), 
+    Leaf(Id),
+    Mov(NumType, Arg, Arg, Arg),
 
-    AllocateData(ID, usize),
-    EndOfMemory(ID),
-    DropMemory(ID),
+    Label(Id), // Note: This shouldn't be allowed to appear in a compiled proc
+    Jump(Id),
+    Bnz(Id, Arg),
+    Bz(Id, Arg),
 
-    Coroutine(ID, ID, Vec<ID>), 
-    Resume(ID),
-    Yield(ID),
-    Finish(ID, ID),
+    AllocateData(Arg, Align),
 
-    Call(ID, Vec<ID>),
-    DynCall(ID, Vec<ID>),
+    Call(Id, Vec<Arg>),
+    DynCall(Arg, Vec<Arg>),
 
     // Dest pointer, source pointer, source offset
 
-    FAdd(ID, ID, ID),
-    FSub(ID, ID, ID),
-    FMul(ID, ID, ID),
-    FDiv(ID, ID, ID),
-    FExp(ID, ID, ID),
-    FNeg(ID, ID),
+    Add(NumType, Arg, Arg, Arg)
+    Sub(NumType, Arg, Arg, Arg)
+    Mul(NumType, Arg, Arg, Arg)
+    Div(NumType, Arg, Arg, Arg)
+    Exp(NumType, Arg, Arg, Arg)
+    Mod(NumType, Arg, Arg, Arg),
+    Neg(NumType, Arg, Arg)
 
-    FEq(ID, ID, ID),
-    FGt(ID, ID, ID),
-    FLt(ID, ID, ID),
+    Eq(NumType, Arg, Arg, Id),
+    Gt(NumType, Id, Id, Id),
+    Lt(NumType, Id, Id, Id),
 
-    IAdd(ID, ID, ID),
-    ISub(ID, ID, ID),
-    IMul(ID, ID, ID),
-    IDiv(ID, ID, ID),
-    IMod(ID, ID, ID),
-    INeg(ID, ID),
-
-    IEq(ID, ID, ID),
-    IGt(ID, ID, ID),
-    ILt(ID, ID, ID),
 
     // TODO ? (also binary not, and, or, xor ?)
-    LNot(ID, ID),
-    LAnd(ID, ID, ID),
-    LOr(ID, ID, ID),
-    LXor(ID, ID, ID),
-    LEq(ID, ID, ID),
+    LNot(L, L),
+    LAnd(L, L, L),
+    LOr(L, L, L),
+    LXor(L, L, L),
+    LEq(L, L, L),
 }
 
 pub fn int64(x: i64) -> Data {
