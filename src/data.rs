@@ -75,7 +75,6 @@ pub enum Op<Id> {
     Gt(NumType, Id, Id, Id),
     Lt(NumType, Id, Id, Id),
 
-
     // TODO ? (also binary not, and, or, xor ?)
     LNot(L, L),
     LAnd(L, L, L),
