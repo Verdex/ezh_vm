@@ -16,15 +16,33 @@ pub struct Data(pub (crate) Vec<u8>);
 
 #[derive(Debug)]
 pub enum Reg {
-    Gen64,
-    Gen32,
-    Gen16,
-    Gen8,
-    FGen64,
-    FGen32,
+    Zero,
     Ip,
     Stack,
     Base,
+}
+
+
+#[derive(Debug)]
+pub enum NumType {
+    U8,
+    I8,
+    U16,
+    I16,
+    U32,
+    I32,
+    U64, 
+    I64,
+    F32,
+    F64,
+}
+
+#[derive(Debug)]
+pub enum Align {
+    A8,
+    A16,
+    A32,
+    A64,
 }
 
 #[derive(Debug)]
