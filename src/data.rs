@@ -61,8 +61,6 @@ pub enum Op<Id> {
     Call(Id, Vec<Arg>),
     DynCall(Arg, Vec<Arg>),
 
-    // Dest pointer, source pointer, source offset
-
     Add(NumType, Arg, Arg, Arg)
     Sub(NumType, Arg, Arg, Arg)
     Mul(NumType, Arg, Arg, Arg)
@@ -71,16 +69,14 @@ pub enum Op<Id> {
     Mod(NumType, Arg, Arg, Arg),
     Neg(NumType, Arg, Arg)
 
-    Eq(NumType, Arg, Arg, Id),
-    Gt(NumType, Id, Id, Id),
-    Lt(NumType, Id, Id, Id),
+    Eq(NumType, Arg, Arg, Arg),
+    Gt(NumType, Arg, Arg, Arg),
+    Lt(NumType, Arg, Arg, Arg),
 
-    // TODO ? (also binary not, and, or, xor ?)
-    LNot(L, L),
-    LAnd(L, L, L),
-    LOr(L, L, L),
-    LXor(L, L, L),
-    LEq(L, L, L),
+    And(NumType, Arg, Arg, Arg),
+    Or(NumType, Arg, Arg, Arg),
+    Xor(NumType, Arg, Arg, Arg),
+    Not(NumType, Arg, Arg),
 }
 
 pub fn int64(x: i64) -> Data {
