@@ -38,9 +38,15 @@ pub enum Align {
     APtr,
 }
 
-#[derive(Debug)]
-pub enum Arg {
     // TODO need to be able to put arrays of constaints someplace but arg seems wrong
+#[derive(Debug)]
+pub enum Dest {
+    Reg(Reg),
+    RegDeref(Reg, isize),
+}
+
+#[derive(Debug)]
+pub enum Src {
     ConstByte(u8),
     ConstU64(u64),
     ConstI64(i64),
@@ -53,36 +59,36 @@ pub enum Arg {
 pub enum Op { 
     Lea(Arg), 
     LeaProc(Rc<str>),
-    Mov(NumType, Arg, Arg, Arg),
+    Mov(NumType, Dest, Src),
 
     Label(Rc<str>), 
     Jump(Rc<str>),
-    Bnz(Rc<str>, Arg),
-    Bz(Rc<str>, Arg),
+    Bnz(Rc<str>, Src),
+    Bz(Rc<str>, Src),
 
     // Note:  Dest for address, Src for size, Alignment
-    AllocateData(Arg, Arg, Align),
+    AllocateData(Dest, Src, Align),
 
-    Call(Rc<str>, Vec<Arg>),
-    DynCall(Arg, Vec<Arg>),
-    SysCall(Rc<str>, Vec<Arg>),
+    Call(Rc<str>, Vec<Src>),
+    DynCall(Src, Vec<Src>),
+    SysCall(Rc<str>, Vec<Src>),
 
-    Add(NumType, Arg, Arg, Arg)
-    Sub(NumType, Arg, Arg, Arg)
-    Mul(NumType, Arg, Arg, Arg)
-    Div(NumType, Arg, Arg, Arg)
-    Exp(NumType, Arg, Arg, Arg)
-    Mod(NumType, Arg, Arg, Arg),
-    Neg(NumType, Arg, Arg)
+    Add(NumType, Dest, Src, Src)
+    Sub(NumType, Dest, Src, Src)
+    Mul(NumType, Dest, Src, Src)
+    Div(NumType, Dest, Src, Src)
+    Exp(NumType, Dest, Src, Src)
+    Mod(NumType, Dest, Src, Src),
+    Neg(NumType, Dest, Src)
 
-    Eq(NumType, Arg, Arg, Arg),
-    Gt(NumType, Arg, Arg, Arg),
-    Lt(NumType, Arg, Arg, Arg),
+    Eq(NumType, Dest, Src, Src),
+    Gt(NumType, Dest, Src, Src),
+    Lt(NumType, Dest, Src, Src),
 
-    And(NumType, Arg, Arg, Arg),
-    Or(NumType, Arg, Arg, Arg),
-    Xor(NumType, Arg, Arg, Arg),
-    Not(NumType, Arg, Arg),
+    And(NumType, Dest, Src, Src),
+    Or(NumType, Dest, Src, Src),
+    Xor(NumType, Dest, Src, Src),
+    Not(NumType, Dest, Src),
 }
 
 #[derive(Debug)]
