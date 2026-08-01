@@ -51,8 +51,6 @@ pub enum Arg {
 
 #[derive(Debug)]
 pub enum Op { 
-    // TODO need a way to do "sys" calls
-
     Lea(Arg), 
     LeaProc(Rc<str>),
     Mov(NumType, Arg, Arg, Arg),
@@ -67,6 +65,7 @@ pub enum Op {
 
     Call(Rc<str>, Vec<Arg>),
     DynCall(Arg, Vec<Arg>),
+    SysCall(Rc<str>, Vec<Arg>),
 
     Add(NumType, Arg, Arg, Arg)
     Sub(NumType, Arg, Arg, Arg)
@@ -109,6 +108,8 @@ pub (crate) enum CompiledOp {
 
     Call(usize, Vec<Arg>),
     DynCall(Arg, Vec<Arg>),
+    // TODO going to need VM or something be cause otherwise pointers are worthless
+    SysCall(usize, Vec<Arg>),
 
     Add(NumType, Arg, Arg, Arg)
     Sub(NumType, Arg, Arg, Arg)
