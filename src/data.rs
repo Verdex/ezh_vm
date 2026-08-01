@@ -28,37 +28,44 @@ pub enum NumType {
     U64, 
     I64,
     F64,
+    Ptr,
 }
 
 #[derive(Debug)]
 pub enum Align {
     A8,
     A64,
+    APtr,
 }
 
 #[derive(Debug)]
 pub enum Arg {
-    Const(i64),
+    // TODO need to be able to put arrays of constaints someplace but arg seems wrong
+    ConstByte(u8),
+    ConstU64(u64),
+    ConstI64(i64),
+    ConstF64(u64),
     Reg(Reg),
     RegDeref(Reg, isize),
 }
 
 #[derive(Debug)]
-pub enum Op<Id> { 
+pub enum Op { 
     // TODO need a way to do "sys" calls
 
     Lea(Arg), 
-    Leaf(Id),
+    LeaProc(Rc<str>),
     Mov(NumType, Arg, Arg, Arg),
 
-    Label(Id), // Note: This shouldn't be allowed to appear in a compiled proc
-    Jump(Id),
-    Bnz(Id, Arg),
-    Bz(Id, Arg),
+    Label(Rc<str>), 
+    Jump(Rc<str>),
+    Bnz(Rc<str>, Arg),
+    Bz(Rc<str>, Arg),
 
-    AllocateData(Arg, Align),
+    // Note:  Dest for address, Src for size, Alignment
+    AllocateData(Arg, Arg, Align),
 
-    Call(Id, Vec<Arg>),
+    Call(Rc<str>, Vec<Arg>),
     DynCall(Arg, Vec<Arg>),
 
     Add(NumType, Arg, Arg, Arg)
@@ -79,36 +86,55 @@ pub enum Op<Id> {
     Not(NumType, Arg, Arg),
 }
 
-pub fn int64(x: i64) -> Data {
-    Data(i64::to_ne_bytes(x).to_vec())
-}
-
-pub fn float64(x: f64) -> Data {
-    Data(f64::to_ne_bytes(x).to_vec())
-}
-
-pub fn bool(x: bool) -> Data {
-    Data(vec![x as u8])
-}
-
-pub fn offset(x: isize) -> Data {
-    Data(isize::to_ne_bytes(x).to_vec())
-}
-
 #[derive(Debug)]
 pub struct Proc { 
     pub name : Rc<str>,
-    pub instrs : Vec<Op<Rc<str>>>,
+    pub instrs : Vec<Op>,
+}
+
+#[derive(Debug)]
+pub (crate) enum CompiledOp { 
+    // TODO need a way to do "sys" calls
+
+    Lea(Arg), 
+    LeaProc(usize),
+    Mov(NumType, Arg, Arg, Arg),
+
+    Jump(usize),
+    Bnz(usize, Arg),
+    Bz(usize, Arg),
+
+    // Note:  Dest for address, Src for size, Alignment
+    AllocateData(Arg, Arg, Align),
+
+    Call(usize, Vec<Arg>),
+    DynCall(Arg, Vec<Arg>),
+
+    Add(NumType, Arg, Arg, Arg)
+    Sub(NumType, Arg, Arg, Arg)
+    Mul(NumType, Arg, Arg, Arg)
+    Div(NumType, Arg, Arg, Arg)
+    Exp(NumType, Arg, Arg, Arg)
+    Mod(NumType, Arg, Arg, Arg),
+    Neg(NumType, Arg, Arg)
+
+    Eq(NumType, Arg, Arg, Arg),
+    Gt(NumType, Arg, Arg, Arg),
+    Lt(NumType, Arg, Arg, Arg),
+
+    And(NumType, Arg, Arg, Arg),
+    Or(NumType, Arg, Arg, Arg),
+    Xor(NumType, Arg, Arg, Arg),
+    Not(NumType, Arg, Arg),
 }
 
 #[derive(Debug)]
 pub struct CompiledProc { 
     pub name : Rc<str>,
-    pub (crate) instrs : Vec<Op<usize>>,
-    pub (crate) slot_names : Vec<Rc<str>>,
+    pub (crate) instrs : Vec<CompiledOp>,
+    pub (crate) frame_align : Align,
     pub (crate) frame_size : usize,
 }
-
 
 pub type StackTrace = Vec<(Rc<str>, usize)>;
 
