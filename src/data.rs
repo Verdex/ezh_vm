@@ -8,11 +8,6 @@ use std::rc::Rc;
 pub const F64_SIZE : usize = std::mem::size_of::<f64>();
 pub const I64_SIZE : usize = std::mem::size_of::<i64>();
 pub const PTR_SIZE : usize = std::mem::size_of::<usize>();
-pub const OFFSET_SIZE : usize = std::mem::size_of::<isize>();
-pub const BOOL_SIZE : usize = std::mem::size_of::<bool>();
-
-#[derive(Debug)]
-pub struct Data(pub (crate) Vec<u8>);
 
 #[derive(Debug)]
 pub enum Reg {
@@ -20,6 +15,7 @@ pub enum Reg {
     Ip,
     Stack,
     Base,
+    Gen,
 }
 
 #[derive(Debug)]
@@ -57,8 +53,8 @@ pub enum Src {
 
 #[derive(Debug)]
 pub enum Op { 
-    Lea(Arg), 
-    LeaProc(Rc<str>),
+    Address(Dest, Reg, isize), 
+    ProcAddress(Dest, Rc<str>),
     Mov(NumType, Dest, Src),
 
     Label(Rc<str>), 
@@ -99,40 +95,37 @@ pub struct Proc {
 
 #[derive(Debug)]
 pub (crate) enum CompiledOp { 
-    // TODO need a way to do "sys" calls
-
-    Lea(Arg), 
-    LeaProc(usize),
-    Mov(NumType, Arg, Arg, Arg),
+    Address(Dest, Reg, isize), 
+    ProcAddress(Dest, usize),
+    Mov(NumType, Dest, Src),
 
     Jump(usize),
-    Bnz(usize, Arg),
-    Bz(usize, Arg),
+    Bnz(usize, Src),
+    Bz(usize, Src),
 
     // Note:  Dest for address, Src for size, Alignment
-    AllocateData(Arg, Arg, Align),
+    AllocateData(Dest, Src, Align),
 
-    Call(usize, Vec<Arg>),
-    DynCall(Arg, Vec<Arg>),
-    // TODO going to need VM or something be cause otherwise pointers are worthless
-    SysCall(usize, Vec<Arg>),
+    Call(usize, Vec<Src>),
+    DynCall(Src, Vec<Src>),
+    SysCall(usize, Vec<Src>),
 
-    Add(NumType, Arg, Arg, Arg)
-    Sub(NumType, Arg, Arg, Arg)
-    Mul(NumType, Arg, Arg, Arg)
-    Div(NumType, Arg, Arg, Arg)
-    Exp(NumType, Arg, Arg, Arg)
-    Mod(NumType, Arg, Arg, Arg),
-    Neg(NumType, Arg, Arg)
+    Add(NumType, Dest, Src, Src)
+    Sub(NumType, Dest, Src, Src)
+    Mul(NumType, Dest, Src, Src)
+    Div(NumType, Dest, Src, Src)
+    Exp(NumType, Dest, Src, Src)
+    Mod(NumType, Dest, Src, Src),
+    Neg(NumType, Dest, Src)
 
-    Eq(NumType, Arg, Arg, Arg),
-    Gt(NumType, Arg, Arg, Arg),
-    Lt(NumType, Arg, Arg, Arg),
+    Eq(NumType, Dest, Src, Src),
+    Gt(NumType, Dest, Src, Src),
+    Lt(NumType, Dest, Src, Src),
 
-    And(NumType, Arg, Arg, Arg),
-    Or(NumType, Arg, Arg, Arg),
-    Xor(NumType, Arg, Arg, Arg),
-    Not(NumType, Arg, Arg),
+    And(NumType, Dest, Src, Src),
+    Or(NumType, Dest, Src, Src),
+    Xor(NumType, Dest, Src, Src),
+    Not(NumType, Dest, Src),
 }
 
 #[derive(Debug)]
