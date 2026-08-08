@@ -5,8 +5,6 @@ use std::rc::Rc;
 // locals and globals are all references
 // dest, src, [src]
 
-pub const F64_SIZE : usize = std::mem::size_of::<f64>();
-pub const I64_SIZE : usize = std::mem::size_of::<i64>();
 pub const PTR_SIZE : usize = std::mem::size_of::<usize>();
 
 #[derive(Debug)]
@@ -34,7 +32,6 @@ pub enum Align {
     APtr,
 }
 
-    // TODO need to be able to put arrays of constaints someplace but arg seems wrong
 #[derive(Debug)]
 pub enum Dest {
     Reg(Reg),
