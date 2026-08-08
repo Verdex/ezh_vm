@@ -26,13 +26,6 @@ pub enum NumType {
 }
 
 #[derive(Debug)]
-pub enum Align {
-    A8,
-    A64,
-    APtr,
-}
-
-#[derive(Debug)]
 pub enum Dest {
     Reg(Reg),
     RegDeref(Reg, isize),
@@ -59,8 +52,7 @@ pub enum Op {
     Bnz(Rc<str>, Src),
     Bz(Rc<str>, Src),
 
-    // Note:  Dest for address, Src for size, Alignment
-    AllocateData(Dest, Src, Align),
+    AllocateData { dest: Dest, size: Src, align: Src },
 
     Call(Rc<str>, Vec<Src>),
     DynCall(Src, Vec<Src>),
@@ -100,8 +92,7 @@ pub (crate) enum CompiledOp {
     Bnz(usize, Src),
     Bz(usize, Src),
 
-    // Note:  Dest for address, Src for size, Alignment
-    AllocateData(Dest, Src, Align),
+    AllocateData { dest: Dest, size: Src, align: Src },
 
     Call(usize, Vec<Src>),
     DynCall(Src, Vec<Src>),
