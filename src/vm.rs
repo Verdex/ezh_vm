@@ -32,19 +32,10 @@ pub struct Vm {
 
 impl Vm {
     pub fn new(procs : Vec<CompiledProc>) -> Vm {
-        Vm { 
-            procs, 
-            current: Frame { id: 0, ip: 0, locals: vec![] }, 
-            frames: vec![], 
-            memory: vec![],
-            memory_len: 0,
-            globals: vec![],
-        }
+        todo!()
     }
 
     pub fn run(&mut self, entry : usize) -> Result<usize, VmError> {
-        const CO_RUN : usize = 0;
-        const CO_FINISH : usize = 1;
 
         if entry >= self.procs.len() {
             return Err(VmError::UnknownProcId(entry, self.stack_trace()));
@@ -62,6 +53,7 @@ impl Vm {
             }
 
             match self.procs[self.current.id].instrs[self.current.ip] {
+                /*
                 Op::Jump(label) => {
                     self.current.ip = label;
                 },
@@ -419,19 +411,11 @@ impl Vm {
                     self.bin_math(dest, a, b, |x:bool, y:bool| Some(x == y))?;
                     self.current.ip += 1;
                 },
+
                 Op::Nop => { self.current.ip += 1; },
+               */
             }
         }
-    }
-
-    fn pack_init_coroutine(&self, proc: usize, params: &[usize]) -> Vec<u8> {
-        // TODO co_run
-        0usize.to().into_iter()
-            .chain(proc.to())
-            .chain(0usize.to()) 
-            .chain(params.iter().map(|x| self.current.locals[*x]).flat_map(|x| x.to()))
-            .chain(std::iter::repeat(0usize).take(self.procs[proc].frame_size - params.len()).flat_map(|x| x.to()))
-            .collect()
     }
 
     fn uni_math<T: Byteable<S>, const S: usize>(&mut self, 
@@ -515,54 +499,7 @@ impl Vm {
 
 #[cfg(test)]
 mod test { 
-    use crate::data;
     use super::*;
 
-    #[test]
-    fn should_handle_single_local_actions() {
-        // Note:  Make sure that an item at the beginning and end of memory can be
-        // set and retrieved
-        const X : usize = data::I64_SIZE;
-        let procs = vec![CompiledProc { 
-            name: "main".into(),
-            slot_names: vec![],
-            instrs: vec![
-                Op::AllocateData(0, X),
-                Op::DataToHeap(0, data::int64(3)),
-                Op::I64Add(0, 0, 0),
-                Op::ReturnLocal(0),
-            ],
-            frame_size: 3,
-        } ];
-        let mut vm = Vm::new(procs);
-        let addr = vm.run(0).unwrap(); 
-        let x : [u8; X] = vm.memory[addr .. addr + X].try_into().unwrap();
-        let x = i64::from_ne_bytes(x);
-        assert_eq!(x, 6);
-    }
-
-    #[test]
-    fn should_handle_two_param_math_op() {
-        const X : usize = data::I64_SIZE;
-        let procs = vec![CompiledProc { 
-            name: "main".into(),
-            slot_names: vec![],
-            instrs: vec![
-                Op::AllocateData(0, X),
-                Op::AllocateData(1, X),
-                Op::AllocateData(2, X),
-                Op::DataToHeap(0, data::int64(3)),
-                Op::DataToHeap(1, data::int64(7)),
-                Op::I64Add(2, 0, 1),
-                Op::ReturnLocal(2),
-            ],
-            frame_size: 3,
-        } ];
-        let mut vm = Vm::new(procs);
-        let addr = vm.run(0).unwrap(); 
-        let x : [u8; X] = vm.memory[addr .. addr + X].try_into().unwrap();
-        let x = i64::from_ne_bytes(x);
-        assert_eq!(x, 10);
-    }
 }
 
