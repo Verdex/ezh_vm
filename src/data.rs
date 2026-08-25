@@ -3,6 +3,7 @@
 use std::rc::Rc;
 
 pub const PTR_SIZE : usize = std::mem::size_of::<usize>();
+pub const PTR_ALIGN : usize = std::mem::align_of::<usize>();
 
 #[derive(Debug)]
 pub enum Reg {
