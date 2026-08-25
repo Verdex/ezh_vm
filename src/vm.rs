@@ -5,14 +5,12 @@ use crate::data::{Op, CompiledProc, VmError, StackTrace};
 pub struct Vm {
     stack: Vec<u8>,
     heap: Vec<u8>,
-
-    /*
-    memory: Vec<u8>,
-    memory_len: usize,
-    */
-
     procs: Vec<CompiledProc>,
-    current: Frame, // TODO ?
+    ip: usize,
+    proc: usize,
+    stack: usize,
+    base: usize,
+    gen: u64,
 }
 
 impl Vm {
