@@ -1,6 +1,6 @@
 
 use std::rc::Rc;
-use crate::data::{Op, CompiledProc, VmError, StackTrace};
+use crate::data::{CompiledOp, CompiledProc, VmError, StackTrace};
 
 pub struct Vm {
     stack: Vec<u8>,
