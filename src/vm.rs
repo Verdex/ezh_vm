@@ -8,9 +8,9 @@ pub struct Vm {
     procs: Vec<CompiledProc>,
     ip: usize,
     proc: usize,
-    stack: usize,
-    base: usize,
-    gen: u64,
+    sp: usize,
+    bp: usize,
+    gp: u64,
 }
 
 impl Vm {
@@ -64,43 +64,43 @@ impl Vm {
                 CompiledOp::SysCall(sys_call, args) => {
 
                 },
-                CompiledOp::Add(num, dest, src, src) => {
+                CompiledOp::Add(num, dest, a, b) => {
 
                 },
-                CompiledOp::Sub(num, dest, src, src) => {
+                CompiledOp::Sub(num, dest, a, b) => {
 
                 },
-                CompiledOp::Mul(num, dest, src, src) => {
+                CompiledOp::Mul(num, dest, a, b) => {
 
                 },
-                CompiledOp::Div(num, dest, src, src) => {
+                CompiledOp::Div(num, dest, a, b) => {
 
                 },
-                CompiledOp::Exp(num, dest, src, src) => {
+                CompiledOp::Exp(num, dest, a, b) => {
 
                 },
-                CompiledOp::Mod(num, dest, src, src) => {
+                CompiledOp::Mod(num, dest, a, b) => {
 
                 },
                 CompiledOp::Neg(num, dest, src) => { 
 
                 },
-                CompiledOp::Eq(num, dest, src, src) => {
+                CompiledOp::Eq(num, dest, a, b) => {
 
                 },
-                CompiledOp::Gt(num, dest, src, src) => {
+                CompiledOp::Gt(num, dest, a, b) => {
 
                 },
-                CompiledOp::Lt(num, dest, src, src) => {
+                CompiledOp::Lt(num, dest, a, b) => {
 
                 },
-                CompiledOp::And(num, dest, src, src) => {
+                CompiledOp::And(num, dest, a, b) => {
 
                 },
-                CompiledOp::Or(num, dest, src, src) => {
+                CompiledOp::Or(num, dest, a, b) => {
 
                 },
-                CompiledOp::Xor(num, dest, src, src) => {
+                CompiledOp::Xor(num, dest, a, b) => {
 
                 },
                 CompiledOp::Not(num, dest, src) => {
