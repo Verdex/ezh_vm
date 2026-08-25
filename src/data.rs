@@ -2,15 +2,13 @@
 
 use std::rc::Rc;
 
-// locals and globals are all references
-// dest, src, [src]
-
 pub const PTR_SIZE : usize = std::mem::size_of::<usize>();
 
 #[derive(Debug)]
 pub enum Reg {
     Zero,
     Ip,
+    Proc,
     Stack,
     Base,
     Gen,
@@ -120,6 +118,8 @@ pub (crate) enum CompiledOp {
 pub struct CompiledProc { 
     pub name : Rc<str>,
     pub (crate) instrs : Vec<CompiledOp>,
+    // TODO I'm not sure how to recover size, align should be possible to ask the consumer to set on
+    // the uncompiled proc
     pub (crate) frame_align : Align,
     pub (crate) frame_size : usize,
 }

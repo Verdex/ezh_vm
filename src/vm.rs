@@ -2,21 +2,6 @@
 use std::rc::Rc;
 use crate::data::{Op, CompiledProc, VmError, StackTrace};
 
-// TODO : if you push return values onto the stack this is a problem for heap space stacks (like
-// call/cc).  However, you can know ahead of time how many slots a function has and allocate that on
-// the heap.  Then the stack pointer grows into a statically determined space.  Only hickup is
-// things like calling a function in a loop, but you can 'unpop' the stack pointer before calling
-// the function again (or something like that because what if you call two functions in a loop).
-
-struct Frame {
-    id: usize,
-    ip: usize,
-    base: isize,
-    stack: isize,
-    // TODO need stack/base pointer thingy
-    // TODO locals have to pulled off separately
-}
-
 pub struct Vm {
     stack: Vec<u8>,
     heap: Vec<u8>,
@@ -31,11 +16,20 @@ pub struct Vm {
 }
 
 impl Vm {
+    // TODO: compiled procs, system calls
     pub fn new(procs : Vec<CompiledProc>) -> Vm {
         todo!()
     }
 
     pub fn run(&mut self, entry : usize) -> Result<usize, VmError> {
+    /*
+    Zero,
+    Ip,
+    Proc,
+    Stack,
+    Base,
+    Gen,
+    */
 
         if entry >= self.procs.len() {
             return Err(VmError::UnknownProcId(entry, self.stack_trace()));
@@ -56,7 +50,7 @@ impl Vm {
                 CompiledOp::Address(Dest, Reg, isize) => {
 
                 }, 
-                CompiledOp::ProcAddress(Dest, usize => {
+                CompiledOp::ProcAddress(Dest, usize) => {
 
                 }),
                 CompiledOp::Mov(NumType, Dest, Src) => {
