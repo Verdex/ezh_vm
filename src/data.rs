@@ -57,13 +57,13 @@ pub enum Op {
     DynCall(Src, Vec<Src>),
     SysCall(Rc<str>, Vec<Src>),
 
-    Add(NumType, Dest, Src, Src)
-    Sub(NumType, Dest, Src, Src)
-    Mul(NumType, Dest, Src, Src)
-    Div(NumType, Dest, Src, Src)
-    Exp(NumType, Dest, Src, Src)
+    Add(NumType, Dest, Src, Src),
+    Sub(NumType, Dest, Src, Src),
+    Mul(NumType, Dest, Src, Src),
+    Div(NumType, Dest, Src, Src),
+    Exp(NumType, Dest, Src, Src),
     Mod(NumType, Dest, Src, Src),
-    Neg(NumType, Dest, Src)
+    Neg(NumType, Dest, Src),
 
     Eq(NumType, Dest, Src, Src),
     Gt(NumType, Dest, Src, Src),
@@ -97,13 +97,13 @@ pub (crate) enum CompiledOp {
     DynCall(Src, Vec<Src>),
     SysCall(usize, Vec<Src>),
 
-    Add(NumType, Dest, Src, Src)
-    Sub(NumType, Dest, Src, Src)
-    Mul(NumType, Dest, Src, Src)
-    Div(NumType, Dest, Src, Src)
-    Exp(NumType, Dest, Src, Src)
+    Add(NumType, Dest, Src, Src),
+    Sub(NumType, Dest, Src, Src),
+    Mul(NumType, Dest, Src, Src),
+    Div(NumType, Dest, Src, Src),
+    Exp(NumType, Dest, Src, Src),
     Mod(NumType, Dest, Src, Src),
-    Neg(NumType, Dest, Src)
+    Neg(NumType, Dest, Src),
 
     Eq(NumType, Dest, Src, Src),
     Gt(NumType, Dest, Src, Src),
