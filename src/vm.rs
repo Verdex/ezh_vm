@@ -34,76 +34,76 @@ impl Vm {
             }
 
             match self.procs[self.current.id].instrs[self.current.ip] {
-                CompiledOp::Address(Dest, Reg, isize) => {
+                CompiledOp::Address(dest, reg, offset) => {
 
                 }, 
-                CompiledOp::ProcAddress(Dest, usize) => {
+                CompiledOp::ProcAddress(dest, proc) => {
 
                 },
-                CompiledOp::Mov(NumType, Dest, Src) => {
+                CompiledOp::Mov(num, dest, src) => {
 
                 },
-                CompiledOp::Jump(usize) => {
+                CompiledOp::Jump(ip) => {
 
                 },
-                CompiledOp::Bnz(usize, Src) => {
+                CompiledOp::Bnz(ip, src) => {
 
                 },
-                CompiledOp::Bz(usize, Src) => {
+                CompiledOp::Bz(ip, src) => {
 
                 },
-                CompiledOp::AllocateData { dest: Dest, size: Src, align: Src } => {
+                CompiledOp::AllocateData { dest, size, align } => {
 
                 },
-                CompiledOp::Call(usize, Vec<Src>) => {
+                CompiledOp::Call(proc, args) => {
 
                 },
-                CompiledOp::DynCall(Src, Vec<Src>) => {
+                CompiledOp::DynCall(src, args) => {
 
                 },
-                CompiledOp::SysCall(usize, Vec<Src>) => {
+                CompiledOp::SysCall(sys_call, args) => {
 
                 },
-                CompiledOp::Add(NumType, Dest, Src, Src) => {
+                CompiledOp::Add(num, dest, src, src) => {
 
                 },
-                CompiledOp::Sub(NumType, Dest, Src, Src) => {
+                CompiledOp::Sub(num, dest, src, src) => {
 
                 },
-                CompiledOp::Mul(NumType, Dest, Src, Src) => {
+                CompiledOp::Mul(num, dest, src, src) => {
 
                 },
-                CompiledOp::Div(NumType, Dest, Src, Src) => {
+                CompiledOp::Div(num, dest, src, src) => {
 
                 },
-                CompiledOp::Exp(NumType, Dest, Src, Src) => {
+                CompiledOp::Exp(num, dest, src, src) => {
 
                 },
-                CompiledOp::Mod(NumType, Dest, Src, Src) => {
+                CompiledOp::Mod(num, dest, src, src) => {
 
                 },
-                CompiledOp::Neg(NumType, Dest, Src) => { 
+                CompiledOp::Neg(num, dest, src) => { 
 
                 },
-                CompiledOp::Eq(NumType, Dest, Src, Src) => {
+                CompiledOp::Eq(num, dest, src, src) => {
 
                 },
-                CompiledOp::Gt(NumType, Dest, Src, Src) => {
+                CompiledOp::Gt(num, dest, src, src) => {
 
                 },
-                CompiledOp::Lt(NumType, Dest, Src, Src) => {
+                CompiledOp::Lt(num, dest, src, src) => {
 
                 },
-                CompiledOp::And(NumType, Dest, Src, Src) => {
+                CompiledOp::And(num, dest, src, src) => {
 
                 },
-                CompiledOp::Or(NumType, Dest, Src, Src) => {
+                CompiledOp::Or(num, dest, src, src) => {
 
                 },
-                CompiledOp::Xor(NumType, Dest, Src, Src) => {
+                CompiledOp::Xor(num, dest, src, src) => {
 
                 },
-                CompiledOp::Not(NumType, Dest, Src) => {
+                CompiledOp::Not(num, dest, src) => {
 
                 },
             }
