@@ -24,86 +24,87 @@ impl Vm {
             return Err(VmError::UnknownProcId(entry, self.stack_trace()));
         }
 
-        self.ip = entry;
+        self.proc = entry;
+        self.ip = 0;
 
         loop {
-            if self.current.ip >= self.procs[self.current.id].instrs.len() {
+            if self.ip >= self.procs[self.proc].instrs.len() {
                 // TODO: with the right construction of compiled proc this might not have to be
                 // something that is even checked (will need to reject procs without returns)
-                return Err(VmError::InstrPointerOutOfRange(self.current.ip, self.stack_trace()));
+                return Err(VmError::InstrPointerOutOfRange(self.ip, self.stack_trace()));
             }
 
-            match self.procs[self.current.id].instrs[self.current.ip] {
-                CompiledOp::Address(dest, reg, offset) => {
+            match self.procs[self.proc].instrs[self.ip] {
+                CompiledOp::Address(ref dest, ref reg, offset) => {
 
                 }, 
-                CompiledOp::ProcAddress(dest, proc) => {
+                CompiledOp::ProcAddress(ref dest, proc) => {
 
                 },
-                CompiledOp::Mov(num, dest, src) => {
+                CompiledOp::Mov(ref num, ref dest, ref src) => {
 
                 },
                 CompiledOp::Jump(ip) => {
 
                 },
-                CompiledOp::Bnz(ip, src) => {
+                CompiledOp::Bnz(ip, ref src) => {
 
                 },
-                CompiledOp::Bz(ip, src) => {
+                CompiledOp::Bz(ip, ref src) => {
 
                 },
-                CompiledOp::AllocateData { dest, size, align } => {
+                CompiledOp::AllocateData { ref dest, ref size, ref align } => {
 
                 },
-                CompiledOp::Call(proc, args) => {
+                CompiledOp::Call(proc, ref args) => {
 
                 },
-                CompiledOp::DynCall(src, args) => {
+                CompiledOp::DynCall(ref src, ref args) => {
 
                 },
-                CompiledOp::SysCall(sys_call, args) => {
+                CompiledOp::SysCall(sys_call, ref args) => {
 
                 },
-                CompiledOp::Add(num, dest, a, b) => {
+                CompiledOp::Add(ref num, ref dest, ref a, ref b) => {
 
                 },
-                CompiledOp::Sub(num, dest, a, b) => {
+                CompiledOp::Sub(ref num, ref dest, ref a, ref b) => {
 
                 },
-                CompiledOp::Mul(num, dest, a, b) => {
+                CompiledOp::Mul(ref num, ref dest, ref a, ref b) => {
 
                 },
-                CompiledOp::Div(num, dest, a, b) => {
+                CompiledOp::Div(ref num, ref dest, ref a, ref b) => {
 
                 },
-                CompiledOp::Exp(num, dest, a, b) => {
+                CompiledOp::Exp(ref num, ref dest, ref a, ref b) => {
 
                 },
-                CompiledOp::Mod(num, dest, a, b) => {
+                CompiledOp::Mod(ref num, ref dest, ref a, ref b) => {
 
                 },
-                CompiledOp::Neg(num, dest, src) => { 
+                CompiledOp::Neg(ref num, ref dest, ref src) => { 
 
                 },
-                CompiledOp::Eq(num, dest, a, b) => {
+                CompiledOp::Eq(ref num, ref dest, ref a, ref b) => {
 
                 },
-                CompiledOp::Gt(num, dest, a, b) => {
+                CompiledOp::Gt(ref num, ref dest, ref a, ref b) => {
 
                 },
-                CompiledOp::Lt(num, dest, a, b) => {
+                CompiledOp::Lt(ref num, ref dest, ref a, ref b) => {
 
                 },
-                CompiledOp::And(num, dest, a, b) => {
+                CompiledOp::And(ref num, ref dest, ref a, ref b) => {
 
                 },
-                CompiledOp::Or(num, dest, a, b) => {
+                CompiledOp::Or(ref num, ref dest, ref a, ref b) => {
 
                 },
-                CompiledOp::Xor(num, dest, a, b) => {
+                CompiledOp::Xor(ref num, ref dest, ref a, ref b) => {
 
                 },
-                CompiledOp::Not(num, dest, src) => {
+                CompiledOp::Not(ref num, ref dest, ref src) => {
 
                 },
             }
@@ -112,10 +113,12 @@ impl Vm {
 
     fn stack_trace(&self) -> StackTrace {
         // Note:  Previous frames will have already incremented past the current call op
-        self.frames.iter().map(|x| (x.id, x.ip - 1))
+        /*self.frames.iter().map(|x| (x.id, x.ip - 1))
                           .chain(std::iter::once( (self.current.id, self.current.ip) ) )
                           .map(|(id, ip)| (Rc::clone(&self.procs[id].name), ip))
                           .collect()
+                          */
+        todo!()
     }
 }
 

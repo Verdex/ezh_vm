@@ -121,7 +121,7 @@ pub struct CompiledProc {
     pub (crate) instrs : Vec<CompiledOp>,
     // TODO I'm not sure how to recover size, align should be possible to ask the consumer to set on
     // the uncompiled proc
-    pub (crate) frame_align : Align,
+    pub (crate) frame_align : usize,
     pub (crate) frame_size : usize,
 }
 
