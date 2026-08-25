@@ -7,8 +7,8 @@ pub const PTR_SIZE : usize = std::mem::size_of::<usize>();
 #[derive(Debug)]
 pub enum Reg {
     Zero,
-    Ip,
-    Proc,
+    Ip, // Note:  Instruction Pointer
+    Proc, // Note:  Current Proc
     Stack,
     Base,
     Gen,
